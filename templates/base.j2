@@ -1,0 +1,26 @@
+vlan 100
+ name DATA
+vlan 200
+ name VOIP
+vlan 300
+ name WIFI
+vlan 400
+ name GUEST
+vlan 999
+ name NATIVE
+!
+{% for i in access_ports %}
+interface {{i['interface']}}
+ switchport access vlan 100
+ switchport voice vlan 200
+{% endfor %}
+!
+{% for t in trunk_ports %}
+interface {{t['interface']}}
+ switchport trunk native vlan 999
+{% endfor %}
+!
+{% for s in SVI %}
+interface {{s['interface']}}
+ ip address {{s['ip_address']}} {{s['subnet']}}
+{% endfor %}
